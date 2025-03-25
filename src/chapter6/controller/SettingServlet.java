@@ -22,7 +22,6 @@ import chapter6.service.UserService;
 @WebServlet(urlPatterns = { "/setting" })
 public class SettingServlet extends HttpServlet {
 
-
 	/**
 	* ロガーインスタンスの生成
 	*/
@@ -42,8 +41,10 @@ public class SettingServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
 
 		HttpSession session = request.getSession();
 		User loginUser = (User) session.getAttribute("loginUser");
@@ -53,12 +54,15 @@ public class SettingServlet extends HttpServlet {
 		request.setAttribute("user", user);
 		request.getRequestDispatcher("setting.jsp").forward(request, response);
 	}
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
 
 		HttpSession session = request.getSession();
 		List<String> errorMessages = new ArrayList<String>();
@@ -68,7 +72,7 @@ public class SettingServlet extends HttpServlet {
 			try {
 				new UserService().update(user);
 			} catch (NoRowsUpdatedRuntimeException e) {
-			log.warning("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");
+				log.warning("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");
 				errorMessages.add("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");
 			}
 		}
@@ -86,9 +90,10 @@ public class SettingServlet extends HttpServlet {
 
 	private User getUser(HttpServletRequest request) throws IOException, ServletException {
 
-
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
 
 		User user = new User();
 		user.setId(Integer.parseInt(request.getParameter("id")));
@@ -102,9 +107,10 @@ public class SettingServlet extends HttpServlet {
 
 	private boolean isValid(User user, List<String> errorMessages) {
 
-
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
 
 		String name = user.getName();
 		String account = user.getAccount();

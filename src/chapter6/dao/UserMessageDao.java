@@ -32,7 +32,7 @@ public class UserMessageDao {
 
     }
 
-    public List<UserMessage> select(Connection connection, int num) {
+    public List<UserMessage> select(Connection connection, Integer id, int num) {
 
 	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
