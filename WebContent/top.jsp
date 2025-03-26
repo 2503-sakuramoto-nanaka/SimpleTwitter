@@ -62,6 +62,7 @@
 					</div>
 					<div class="text"><c:out value="${message.text}" /></div>
 					<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+					<input type="submit" value="削除">
 				</div>
 			</c:forEach>
 		</div>
