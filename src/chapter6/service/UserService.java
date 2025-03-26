@@ -28,15 +28,12 @@ public class UserService {
 	public UserService() {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
-
 	}
 
 	public void insert(User user) {
 
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
+		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
 		Connection connection = null;
 		try {
@@ -64,10 +61,8 @@ public class UserService {
 
 	public User select(String accountOrEmail, String password) {
 
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
+		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
 		Connection connection = null;
 		try {
@@ -96,10 +91,8 @@ public class UserService {
 
 	public User select(int userId) {
 
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
+		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
 		Connection connection = null;
 		try {
@@ -123,12 +116,31 @@ public class UserService {
 		}
 	}
 
+	public User select(String account) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();//●データベース接続
+			//●UserDao.selectに引数としてconnnection.accountを追加
+			User user = new UserDao().select(connection, account);
+			commit(connection);
+
+			return user;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
 	public void update(User user) {
 
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
+		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
 		Connection connection = null;
 		try {

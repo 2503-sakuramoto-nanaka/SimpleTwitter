@@ -20,7 +20,6 @@ import chapter6.service.UserService;
 @WebServlet(urlPatterns = { "/signup" })
 public class SignUpServlet extends HttpServlet {
 
-
    /**
    * ロガーインスタンスの生成
    */
@@ -33,14 +32,13 @@ public class SignUpServlet extends HttpServlet {
 	public SignUpServlet() {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
-
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
+		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
 		request.getRequestDispatcher("signup.jsp").forward(request, response);
@@ -50,8 +48,7 @@ public class SignUpServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
-
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
+		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
 		List<String> errorMessages = new ArrayList<String>();
@@ -68,8 +65,7 @@ public class SignUpServlet extends HttpServlet {
 
 	private User getUser(HttpServletRequest request) throws IOException, ServletException {
 
-
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
+		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
 		User user = new User();
@@ -80,36 +76,36 @@ public class SignUpServlet extends HttpServlet {
 		user.setDescription(request.getParameter("description"));
 		return user;
 	}
-
+	//●isValidメソッドを使用し、バリデーションを実装
 	private boolean isValid(User user, List<String> errorMessages) {
 
-
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
+		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
 		String name = user.getName();
 		String account = user.getAccount();
 		String password = user.getPassword();
 		String email = user.getEmail();
-
+		//●DBからDao,Serviceを経由してユーザ情報を取得
+		//●返ってきた結果がnull(0件)だったらOK、ぞうじゃなければ(既にある）ならエラー
+		User result = new UserService().select(account);
+		if(result != null) {
+			errorMessages.add("ユーザーが重複しています");
+		}
 		if (!StringUtils.isEmpty(name) && (20 < name.length())) {
  		   errorMessages.add("名前は20文字以下で入力してください");
 		}
-
 		if (StringUtils.isEmpty(account)) {
 			errorMessages.add("アカウント名を入力してください");
 		} else if (20 < account.length()) {
 			errorMessages.add("アカウント名は20文字以下で入力してください");
 		}
-
 		if (StringUtils.isEmpty(password)) {
 			errorMessages.add("パスワードを入力してください");
 		}
-
 		if (!StringUtils.isEmpty(email) && (50 < email.length())) {
 			errorMessages.add("メールアドレスは50文字以下で入力してください");
 		}
-
 		if (errorMessages.size() != 0) {
 			return false;
 		}
