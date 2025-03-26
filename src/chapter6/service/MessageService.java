@@ -35,10 +35,8 @@ public class MessageService {
 
 	public void insert(Message message) {
 
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
+		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
 		Connection connection = null;
 		try {
@@ -59,13 +57,13 @@ public class MessageService {
 			close(connection);
 		}
 	}
-
+	/*
+	 * selectの引数にString型のuserIdを追加
+	 */
 	public List<UserMessage> select(String userId) {
 
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
+		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
 		final int LIMIT_NUM = 1000;
 
