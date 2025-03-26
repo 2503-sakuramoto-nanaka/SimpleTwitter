@@ -111,9 +111,6 @@ public class SettingServlet extends HttpServlet {
 		//●DBからDao,Serviceを経由してユーザ情報を取得
 		//●返ってきた結果がnull(0件)じゃない、かつ　帰ってきた結果が今のID(ログインしている本人のid)じゃなければエラー
 		User result = new UserService().select(account);
-		if(result != null && result.getId() != id){
-			errorMessages.add("ユーザーが重複しています");
-		}
 		if (!StringUtils.isEmpty(name) && (20 < name.length())) {
 			errorMessages.add("名前は20文字以下で入力してください");
 		}
@@ -121,6 +118,9 @@ public class SettingServlet extends HttpServlet {
 			errorMessages.add("アカウント名を入力してください");
 		} else if (20 < account.length()) {
 			errorMessages.add("アカウント名は20文字以下で入力してください");
+		}
+		if(result != null && result.getId() != id){
+			errorMessages.add("アカウント名が重複しています");
 		}
 		if (!StringUtils.isEmpty(email) && (50 < email.length())) {
 			errorMessages.add("メールアドレスは50文字以下で入力してください");
