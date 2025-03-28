@@ -63,7 +63,7 @@
 					<div class="text"><c:out value="${message.text}" /></div>
 					<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
 				<c:if test="${loginUser.id == message.userId}">
-					<form action="edit" method="post">
+					<form action="edit" method="get">
 						<input type="hidden" name="message_id" value="${message.id}"/> <br />
 						<button type="submit">編集</button>
 					</form>
@@ -75,5 +75,6 @@
 				</div>
 			</c:forEach>
 		</div>
+		<div class="copyright"> Copyright(c)Your Name</div>
 	</body>
 </html>

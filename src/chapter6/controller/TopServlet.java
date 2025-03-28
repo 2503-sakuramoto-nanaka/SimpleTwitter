@@ -51,10 +51,13 @@ public class TopServlet extends HttpServlet {
 		 * MessageServiceのselectに引数としてString型のuser_idを追加
 		 */
 		String userId = request.getParameter("user_id");
+		/*DBから取得してきたUserMessage型のアイテムがリスト状に格納されている*/
 		List<UserMessage> messages = new MessageService().select(userId);
 
+		/*UserMessage型のアイテムをJSPで表示できるよう、requestにset*/
 		request.setAttribute("messages", messages);
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
+
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
 	}
 }
