@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 
 import chapter6.beans.Message;
-import chapter6.beans.User;
 import chapter6.logging.InitApplication;
 import chapter6.service.MessageService;
 
@@ -40,20 +39,30 @@ public class EditServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
+		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
+		Message message = null;
 
 		String messageId = request.getParameter("message_id");
-		//●getParameterで取得してきた値は全てString型だが、idはint型なので型変換
-		int messageIdInt = Integer.parseInt(messageId);
-		//●MessageServiceのdeleteに引数としてint型のmassageIdIntを追加
-		//●setAttributeでJSPへ値を渡す()
-		Message message = new MessageService().edit(messageIdInt);
+		HttpSession session = request.getSession();
+
+		if(!StringUtils.isBlank(messageId) &&  messageId.matches("^[0-9]*$")) {
+			//●getParameterで取得してきた値は全てString型だが、idはint型なので型変換
+			int messageIdInt = Integer.parseInt(messageId);
+			//●MessageServiceのeditに引数としてint型のmassageIdIntを追加
+			//●setAttributeでJSPへ値を渡す()
+			 message = new MessageService().edit(messageIdInt);
+		}
+		if(message == null) {
+			List<String> errorMessages = new ArrayList<String>();
+			errorMessages.add("不正なパラメータが入力されました");
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+			return;
+		}
+
 		//●"message"という名前にmessageの情報をrequestに格納
 		request.setAttribute("message", message);
-		//●requestに格納したmessageの情報と
 		request.getRequestDispatcher("/edit.jsp").forward(request, response);
 	}
 
@@ -68,20 +77,19 @@ public class EditServlet extends HttpServlet {
 		List<String> errorMessages = new ArrayList<String>();
 
 		String text = request.getParameter("text");
-		
-		if (!isValid(text, errorMessages)) {
-			session.setAttribute("errorMessages", errorMessages);
-			response.sendRedirect("./");
-			return;
-		}
+		String messageId = request.getParameter("message_id");
+		int messageIdInt = Integer.parseInt(messageId);
 
 		Message message = new Message();
 		message.setText(text);
-		
+		message.setId(messageIdInt);
 
-		//？MessageServletでは、どのようにつかわれていたのか（なその時ぜ必要だったのか）→ここでも必要か確認
-		User user = (User) session.getAttribute("loginUser");
-		message.setUserId(user.getId());
+		if (!isValid(text, errorMessages)) {
+			session.setAttribute("errorMessages", errorMessages);
+			session.setAttribute("message", message);
+			response.sendRedirect("edit.jsp");
+			return;
+		}
 
 		new MessageService().update(message);
 		response.sendRedirect("./");
@@ -92,12 +100,11 @@ public class EditServlet extends HttpServlet {
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
 		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
-		if (StringUtils.isEmpty(text)) {
+		if (StringUtils.isBlank(text)) {
 			errorMessages.add("メッセージを入力してください");
 		} else if (140 < text.length()) {
 			errorMessages.add("140文字以下で入力してください");
 		}
-
 		if (errorMessages.size() != 0) {
 			return false;
 		}

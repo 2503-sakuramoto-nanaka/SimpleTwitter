@@ -9,7 +9,6 @@
         <link href="css/style.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-    <div class="main-contents">
     	<div class="header">
 			<c:if test="${ empty loginUser }">
 	   			<a href="login">ログイン</a>
@@ -21,6 +20,7 @@
 				<a href="logout">ログアウト</a>
 			</c:if>
 		</div>
+		<div class="main-contents">
    		 <c:if test="${ not empty loginUser }">
 			<div class="profile">
 				<div class="name"><h2><c:out value="${loginUser.name}" /></h2></div>
@@ -43,10 +43,10 @@
 				<input type="hidden" name="message_id" value="${message.id}" />
 				<textarea name="text" cols="100" rows="5" class="tweet-box"><c:out
 						value="${message.text}" /></textarea>
-				<br /> <input type="submit" value="更新">（140文字まで）
+				<input type="submit" value="更新">（140文字まで）
 			</form>
 		</div>
-		<div class="copyright">Copyright(c)Your Name</div>
+		<div class="copyright">Copyright(c)Nanaka Sakuramoto</div>
 	</div>
 </body>
  </html>

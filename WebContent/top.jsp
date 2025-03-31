@@ -43,7 +43,8 @@
 		<c:if test="${ isShowMessageForm }">
 			<form action="message" method="post">
 				いま、どうしてる？<br />
-				<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
+				<textarea name="text" cols="100" rows="5" class="tweet-box"><c:out
+						value="${message.text}" /></textarea>
 				<br />
 				<input type="submit" value="つぶやく">（140文字まで）
 			</form>
@@ -60,7 +61,7 @@
 						</span>
 						<span class="name"><c:out value="${message.name}" /></span>
 					</div>
-					<div class="text"><c:out value="${message.text}" /></div>
+					<div class="text"><pre><c:out value="${message.text}" /></pre></div>
 					<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
 				<c:if test="${loginUser.id == message.userId}">
 					<form action="edit" method="get">
@@ -75,6 +76,6 @@
 				</div>
 			</c:forEach>
 		</div>
-		<div class="copyright"> Copyright(c)Your Name</div>
+		<div class="copyright"> Copyright(c)Nanaka Sakuramoto</div>
 	</body>
 </html>
