@@ -22,35 +22,35 @@
 				<a href="logout">ログアウト</a>
 			</c:if>
 		</div>
-	<c:if test="${ not empty loginUser }">
-		<div class="profile">
-			<div class="name"><h2><c:out value="${loginUser.name}" /></h2></div>
-			<div class="account">@<c:out value="${loginUser.account}" /></div>
-			<div class="description"><c:out value="${loginUser.description}" /></div>
-		</div>
-	</c:if>
-	<c:if test="${ not empty errorMessages }">
-		<div class="errorMessages">
-			<ul>
-				<c:forEach items="${errorMessages}" var="errorMessage">
-					<li><c:out value="${errorMessage}" />
-				</c:forEach>
-			</ul>
-		</div>
-		<c:remove var="errorMessages" scope="session" />
-	</c:if>
-	<div class="form-area">
-		<c:if test="${ isShowMessageForm }">
-			<form action="message" method="post">
-				いま、どうしてる？<br />
-				<textarea name="text" cols="100" rows="5" class="tweet-box"><c:out
-						value="${message.text}" /></textarea>
-				<br />
-				<input type="submit" value="つぶやく">（140文字まで）
-			</form>
+		<c:if test="${ not empty loginUser }">
+			<div class="profile">
+				<div class="name"><h2><c:out value="${loginUser.name}" /></h2></div>
+				<div class="account">@<c:out value="${loginUser.account}" /></div>
+				<div class="description"><c:out value="${loginUser.description}" /></div>
+			</div>
 		</c:if>
-	</div>
-	<div class="messages">
+		<c:if test="${ not empty errorMessages }">
+			<div class="errorMessages">
+				<ul>
+					<c:forEach items="${errorMessages}" var="errorMessage">
+						<li><c:out value="${errorMessage}" />
+					</c:forEach>
+				</ul>
+			</div>
+			<c:remove var="errorMessages" scope="session" />
+		</c:if>
+		<div class="form-area">
+			<c:if test="${ isShowMessageForm }">
+				<form action="message" method="post">
+					いま、どうしてる？<br />
+					<textarea name="text" cols="100" rows="5" class="tweet-box"><c:out
+							value="${message.text}" /></textarea>
+					<br />
+					<input type="submit" value="つぶやく">（140文字まで）
+				</form>
+			</c:if>
+		</div>
+		<div class="messages">
 			<c:forEach items="${messages}" var="message">
 				<div class="message">
 					<div class="account-name">
