@@ -63,16 +63,16 @@
 					</div>
 					<div class="text"><pre><c:out value="${message.text}" /></pre></div>
 					<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
-				<c:if test="${loginUser.id == message.userId}">
-					<form action="edit" method="get">
-						<input type="hidden" name="message_id" value="${message.id}"/> <br />
-						<button type="submit">編集</button>
-					</form>
-					<form action="deleteMessage" method="post">
-						<input type="hidden" name="message_id" value="${message.id}"/> <br />
-						<button type="submit">削除</button>
-					</form>
-				</c:if>
+					<c:if test="${loginUser.id == message.userId}">
+						<form action="edit" method="get">
+							<input type="hidden" name="message_id" value="${message.id}"/> <br />
+							<button type="submit">編集</button>
+						</form>
+						<form action="deleteMessage" method="post">
+							<input type="hidden" name="message_id" value="${message.id}"/> <br />
+							<button type="submit">削除</button>
+						</form>
+					</c:if>
 				</div>
 			</c:forEach>
 		</div>

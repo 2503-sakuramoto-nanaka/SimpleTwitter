@@ -57,6 +57,7 @@ public class MessageService {
 			close(connection);
 		}
 	}
+
 	/*
 	 * selectの引数にString型のuserIdを追加
 	 */
@@ -102,6 +103,7 @@ public class MessageService {
 			close(connection);
 		}
 	}
+
 	public void delete(int messageIdInt) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
@@ -126,7 +128,8 @@ public class MessageService {
 			close(connection);
 		}
 	}
-	public Message edit(int messageIdInt) {
+
+	public Message select(int messageIdInt) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
 		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
@@ -135,7 +138,7 @@ public class MessageService {
 		try {
 			connection = getConnection();
 			//●DaoにmessageIdIntを引数として渡す
-			Message messages = new MessageDao().edit(connection, messageIdInt);
+			Message messages = new MessageDao().select(connection, messageIdInt);
 			commit(connection);
 			return messages;
 
@@ -153,6 +156,7 @@ public class MessageService {
 			close(connection);
 		}
 	}
+
 	public void update(Message message) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
@@ -178,4 +182,3 @@ public class MessageService {
 		}
 	}
 }
-

@@ -51,7 +51,7 @@ public class EditServlet extends HttpServlet {
 			int messageIdInt = Integer.parseInt(messageId);
 			//●MessageServiceのeditに引数としてint型のmassageIdIntを追加
 			//●setAttributeでJSPへ値を渡す()
-			 message = new MessageService().edit(messageIdInt);
+			 message = new MessageService().select(messageIdInt);
 		}
 		if(message == null) {
 			List<String> errorMessages = new ArrayList<String>();
@@ -72,7 +72,6 @@ public class EditServlet extends HttpServlet {
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
 		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
-		HttpSession session = request.getSession();
 		//●エラーメッセージを格納するリストを表示
 		List<String> errorMessages = new ArrayList<String>();
 
@@ -85,9 +84,9 @@ public class EditServlet extends HttpServlet {
 		message.setId(messageIdInt);
 
 		if (!isValid(text, errorMessages)) {
-			session.setAttribute("errorMessages", errorMessages);
-			session.setAttribute("message", message);
-			response.sendRedirect("edit.jsp");
+			request.setAttribute("errorMessages", errorMessages);
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("/edit.jsp").forward(request, response);
 			return;
 		}
 

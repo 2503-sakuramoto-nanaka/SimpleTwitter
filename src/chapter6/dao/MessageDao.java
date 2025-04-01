@@ -66,6 +66,7 @@ public class MessageDao {
 			close(ps);
 		}
 	}
+
 	public void delete(Connection connection, int messageIdInt) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
@@ -91,7 +92,7 @@ public class MessageDao {
 	}
 
 	/*つぶやきの編集（doGet）*/
-	public Message edit(Connection connection, int messageIdInt) {
+	public Message select(Connection connection, int messageIdInt) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
 		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
@@ -120,6 +121,7 @@ public class MessageDao {
 			close(ps);
 		}
 	}
+
 	private List<Message> toUserMessages(ResultSet rs) throws SQLException {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
@@ -142,6 +144,7 @@ public class MessageDao {
 			close(rs);
 		}
 	}
+
 	public Message update(Connection connection, Message message) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
@@ -150,7 +153,9 @@ public class MessageDao {
 		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE messages SET text = ?");
+			sql.append("UPDATE messages SET ");
+			sql.append("  text = ?,");
+			sql.append("  updated_date = CURRENT_TIMESTAMP ");
 			sql.append("WHERE id = ?");
 
 			ps = connection.prepareStatement(sql.toString());
