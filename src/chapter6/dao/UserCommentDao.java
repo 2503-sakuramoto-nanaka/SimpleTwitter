@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import chapter6.beans.UserMessage;
+import chapter6.beans.UserComment;
 import chapter6.exception.SQLRuntimeException;
 import chapter6.logging.InitApplication;
 
-public class UserMessageDao {
+public class UserCommentDao {
 
 	/**
 	* ロガーインスタンスの生成
@@ -26,13 +26,13 @@ public class UserMessageDao {
 	* デフォルトコンストラクタ
 	* アプリケーションの初期化を実施する。
 	*/
-	public UserMessageDao() {
+	public UserCommentDao() {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
 
 	}
-
-	public List<UserMessage> select(Connection connection, Integer id, int num) {
+	//●DBのデータを取得してコメントを表示する
+	public List<UserComment> select(Connection connection, int num) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
 		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
@@ -40,31 +40,23 @@ public class UserMessageDao {
 		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder();
-			//●idがnullだったらつぶやきを全件取得し、
-			//●idがnull以外だったら、その値に対応するユーザーIDの投稿を取得する
 			sql.append("SELECT ");
-			sql.append("    messages.id as id, ");
-			sql.append("    messages.text as text, ");
-			sql.append("    messages.user_id as user_id, ");
+			sql.append("    comments.id as id, ");
+			sql.append("    comments.text as text, ");
+			sql.append("    comments.message_id as message_id, ");
 			sql.append("    users.account as account, ");
 			sql.append("    users.name as name, ");
-			sql.append("    messages.created_date as created_date ");
-			sql.append("FROM messages ");
+			sql.append("    comments.created_date as created_date ");
+			sql.append("FROM comments ");
 			sql.append("INNER JOIN users ");
-			sql.append("ON messages.user_id = users.id ");
-			if (id != null) {
-				sql.append(" WHERE user_id = ? ");
-			}
+			sql.append("ON comments.user_id = users.id ");
 			sql.append("ORDER BY created_date DESC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
-			if (id != null) {
-				ps.setInt(1, id);
-			}
 			ResultSet rs = ps.executeQuery();
 
-			List<UserMessage> messages = toUserMessages(rs);
-			return messages;
+			List<UserComment> comments = toUserComments(rs);
+			return comments;
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, new Object() {
 			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
@@ -74,25 +66,25 @@ public class UserMessageDao {
 		}
 	}
 
-	private List<UserMessage> toUserMessages(ResultSet rs) throws SQLException {
+	private List<UserComment> toUserComments(ResultSet rs) throws SQLException {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
 		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
-		List<UserMessage> messages = new ArrayList<UserMessage>();
+		List<UserComment> comments = new ArrayList<UserComment>();
 		try {
 			while (rs.next()) {
-				UserMessage message = new UserMessage();
-				message.setId(rs.getInt("id"));
-				message.setText(rs.getString("text"));
-				message.setUserId(rs.getInt("user_id"));
-				message.setAccount(rs.getString("account"));
-				message.setName(rs.getString("name"));
-				message.setCreatedDate(rs.getTimestamp("created_date"));
+				UserComment comment = new UserComment();
+				comment.setId(rs.getInt("id"));
+				comment.setText(rs.getString("text"));
+				comment.setMessageId(rs.getInt("message_id"));
+				comment.setAccount(rs.getString("account"));
+				comment.setName(rs.getString("name"));
+				comment.setCreatedDate(rs.getTimestamp("created_date"));
 
-				messages.add(message);
+				comments.add(comment);
 			}
-			return messages;
+			return comments;
 		} finally {
 			close(rs);
 		}

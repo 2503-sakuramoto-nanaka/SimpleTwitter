@@ -63,6 +63,7 @@
 					</div>
 					<div class="text"><pre><c:out value="${message.text}" /></pre></div>
 					<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+
 					<c:if test="${loginUser.id == message.userId}">
 						<form action="edit" method="get">
 							<input type="hidden" name="message_id" value="${message.id}"/> <br />
@@ -71,6 +72,31 @@
 						<form action="deleteMessage" method="post">
 							<input type="hidden" name="message_id" value="${message.id}"/> <br />
 							<button type="submit">削除</button>
+						</form>
+					</c:if>
+				</div>
+				<div class="comment">
+					<c:forEach items="${comment}" var="comment">
+						<div class="comment">
+							<c:if test="${message.id == comment.messageId}">
+								<div class="account-name">
+									<span class="account">>
+										<c:out value="${comment.account}" />
+									</span>
+									<span class="name"><c:out value="${comment.name}" />
+									</span>
+								</div>
+								<div class="text"><pre><c:out value="${comment.text}" /></pre></div>
+								<div class="date"><fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+							</c:if>
+						</div>
+					</c:forEach>
+					<c:if test="${ isShowMessageForm }">
+						<form action="comment" method="post">
+							<br />
+							<input type="hidden" name="message_id" value="${message.id}"/> <br />
+							<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
+							<input type="submit" value="返信">（140文字まで）
 						</form>
 					</c:if>
 				</div>
