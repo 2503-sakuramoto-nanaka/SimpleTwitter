@@ -35,6 +35,7 @@ public class TopServlet extends HttpServlet {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
 	}
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
@@ -53,14 +54,19 @@ public class TopServlet extends HttpServlet {
 		 * MessageServiceのselectに引数としてString型のuser_idを追加
 		 */
 		String userId = request.getParameter("user_id");
+		//●開始時刻と現在時刻のStartとendの値をJSPから受け取る
+		String start = request.getParameter("start");
+		String end = request.getParameter("end");
 		/*DBから取得してきたUserMessage型のアイテムがリスト状に格納されている*/
-		List<UserMessage> messages = new MessageService().select(userId);
+		List<UserMessage> messages = new MessageService().select(userId, start, end);
 		List<UserComment> comments = new CommentService().select();
 
 		/*UserMessage型のアイテムをJSPで表示できるよう、requestにset*/
 		request.setAttribute("messages", messages);
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
 		request.setAttribute("comment",comments );
+		request.setAttribute("start", start);
+		request.setAttribute("end", end);
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
 	}
 }

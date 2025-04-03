@@ -31,7 +31,6 @@ public class LoginServlet extends HttpServlet {
 	public LoginServlet() {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
-
 	}
 
 	@Override

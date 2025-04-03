@@ -114,7 +114,7 @@ public class UserDao {
 		}
 	}
 
-	//	●String型のaccountを引数にもつ、selectメソッドを追加する
+	//●String型のaccountを引数にもつ、selectメソッドを追加する
 	public User select(Connection connection, String account) {
 
 		PreparedStatement ps = null;

@@ -4,6 +4,8 @@ import static chapter6.utils.CloseableUtil.*;
 import static chapter6.utils.DBUtil.*;
 
 import java.sql.Connection;
+import java.text.SimpleDateFormat;//●日付のフォーマットを指定し見やすく表示するためのクラス
+import java.util.Date;//●現在時刻を取得するDateクラス
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,7 +63,7 @@ public class MessageService {
 	/*
 	 * selectの引数にString型のuserIdを追加
 	 */
-	public List<UserMessage> select(String userId) {
+	public List<UserMessage> select(String userId, String start, String end) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
 		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
@@ -80,12 +82,27 @@ public class MessageService {
 			if(!StringUtils.isEmpty(userId)) {
 				id = Integer.parseInt(userId);
 			}
+			//●入力の有無を確認し、開始と終了の日時を引数に設定
+			//●top.jspでstartが入力されていたら00:00:00で、されていなかったらデフォルト値を入力
+			if(!StringUtils.isEmpty(start)) {
+				start = start + " 00:00:00";
+			}else{
+				start ="2020/01/01 00:00:00";
+			}
+			//●top.jspでendが入力されていたら23:59:59で、されていなかったらデフォルト値を入力
+			if(!StringUtils.isEmpty(end)) {
+				end = end + " 23:59:59";
+			}else{
+				Date date = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				end = sdf.format(date);
+			}
 		    /*
 		    * messageDao.selectに引数としてInteger型のidを追加
 		    * idがnullだったら全件取得する
 		    * idがnull以外だったら、その値に対応するユーザーIDの投稿を取得する
 		    */
-			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM);
+			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM, start, end);
 			commit(connection);
 
 			return messages;
@@ -140,6 +157,8 @@ public class MessageService {
 			//●DaoにmessageIdIntを引数として渡す
 			Message messages = new MessageDao().select(connection, messageIdInt);
 			commit(connection);
+
+
 			return messages;
 
 		} catch (RuntimeException e) {

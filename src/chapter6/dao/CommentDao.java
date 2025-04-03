@@ -28,6 +28,7 @@ public class CommentDao {
 		application.init();
 
 	}
+
 	public void insert(Connection connection, Comment comment) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +

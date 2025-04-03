@@ -30,6 +30,7 @@ public class CommentService {
 		application.init();
 
 	}
+
 	//●返信コメントをDBに登録したいのでinsertで値を渡していく
 	public void insert(Comment comment) {
 
@@ -55,6 +56,7 @@ public class CommentService {
 			close(connection);
 		}
 	}
+
 	//●DBのデータを取得してコメントを表示するためにDaoへselectで接続
 	public List<UserComment> select() {
 
