@@ -24,11 +24,11 @@ public class LoginFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 
 		//●ServletRequestをHttpServletRequestへ型変換
-		HttpServletRequest Request = (HttpServletRequest)request;
+		HttpServletRequest httpRequest = (HttpServletRequest)request;
 		//ServletResponseをHttpServletResponseへ型変換
-		HttpServletResponse Response = (HttpServletResponse)response;
+		HttpServletResponse httpResponse = (HttpServletResponse)response;
 
-		HttpSession session = Request.getSession();
+		HttpSession session = httpRequest.getSession();
 		List<String> errorMessages = new ArrayList<String>();
 
 		//●ログインしていれば、リクエストにあった画面に遷移
@@ -40,7 +40,7 @@ public class LoginFilter implements Filter {
 		}else {
 			errorMessages.add("ログインしてください");
 			session.setAttribute("errorMessages", errorMessages);
-			Response.sendRedirect("./login");
+			httpResponse.sendRedirect("./login");
 		}
 	}
 
